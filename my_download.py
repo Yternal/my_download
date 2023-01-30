@@ -17,8 +17,8 @@ from typing import Union
 import requests
 from my_retry.retry_model import MyRetry
 
-local_part_download_retry_times = 1
-local_download_retry_times = 1
+global_part_download_retry_times = 1
+global_download_retry_times = 1
 
 
 class DownloadEngine:
@@ -51,13 +51,13 @@ class DownloadEngine:
         self.header = header
         self.cookies = cookies
         if download_retry_times:
-            global local_download_retry_times
-            local_download_retry_times = download_retry_times
+            global global_download_retry_times
+            global_download_retry_times = download_retry_times
         if part_download_retry_times:
-            global local_part_download_retry_times
-            local_part_download_retry_times = part_download_retry_times
+            global global_part_download_retry_times
+            global_part_download_retry_times = part_download_retry_times
 
-    @MyRetry(times=local_part_download_retry_times, custom_return=(True, False))
+    @MyRetry(times=global_part_download_retry_times, custom_return=(True, False))
     def download_part(self, url: str, part_save_path: str):
         """
         分片下载
@@ -68,11 +68,3 @@ class DownloadEngine:
             with open(part_save_path, 'wb') as f:
                 copyfileobj(r.raw, f)
         return True
-
-    def test(self):
-        print(local_part_download_retry_times)
-        print(local_download_retry_times)
-
-
-if __name__ == '__main__':
-    DownloadEngine(part_download_retry_times=3, download_retry_times=5).test()
