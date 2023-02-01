@@ -12,6 +12,7 @@ setup(
     description='file download function，Support split download',
     author_email='1307272972@qq.com',
     url='https://github.com/Yternal/my_download',
+
     # 包内需要引用的文件夹
     packages=["my_download"],
 
@@ -20,5 +21,9 @@ setup(
         'requests >= 1.18.8',
         'my_retry >= 0.1.0'
     ],
+
+    # python版本
+    python_requires='>=3.8',
+
     zip_safe=True,
 )
